@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { HttpClient, HttpErrorResponse } from '@angular/common/http';
+import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
 
 
@@ -47,7 +48,22 @@ export class AppComponent {
   updateIndex:number=0;
   todos: string[] = [];
   isUpdateWorkFromActive:boolean=false;
-  save() {
+
+  readonly #http=inject(HttpClient);
+  todosHttp:any[] =[];
+
+  get2(){
+  this.#http.get<any[]>("https://jsonplaceholder.typicode.com/todo/").subscribe({
+    next:(res)=>{
+        this.todosHttp=res;
+    },
+    error:(err:HttpErrorResponse)=>{
+      console.log(err)
+    }
+  })
+}  
+
+save() {
     this.todos.push(this.work);
     this.work="";
   }
